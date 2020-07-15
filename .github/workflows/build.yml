@@ -52,7 +52,7 @@ jobs:
         PDXPassword: ${{ secrets.PDXPASSWORD }}
         googleAPICredentials: ${{ secrets.GOOGLEAPICREDENTIALS }}
         googleClientSecret: ${{ secrets.GOOGLECLIENTSECRET }}
-        modPath: "build"
+        modPath: "oldworldblues_dev/build"
         steamSentryFileName:  ${{ secrets.STEAMSENTRYFILENAME }}
         steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
         debugImagePath: images
