@@ -35,6 +35,9 @@ jobs:
         devDir="oldworldblues_dev"
         destDir="oldworldblues"
         chmod +x ./PrepareForUpload.sh
+        ls -la
+        echo ""
+        ls -la $devDir
         ./PrepareForUpload.sh $devDir $destDir Thumbnail.png
         mkdir build
         mv ../$destDir build
