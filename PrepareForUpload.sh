@@ -32,3 +32,4 @@ if [ ! -f "thumbnail.png" ]; then
 fi
 sed -i "s/picture=.*//g" "descriptor.mod"
 rsync -ahm --include="/thumbnail.png" --include='/descriptor.mod' --include='/README.md' --exclude='*.7z' --exclude='/*.*' --exclude='/.*' --exclude='/tutorial' --exclude='*.sh' --exclude='*.ps1' --exclude='*.psd' --exclude='*.py' . $destinationName
+cp -f "$destinationName/descriptor.mod" "$destinationName/../$2.mod"
