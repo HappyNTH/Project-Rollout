@@ -1,0 +1,65 @@
+name: Build Test Release
+
+on:
+  repository_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+      STEAM_FILE_ID: ${{ secrets.STEAM_FILE_ID }}
+      DEBUG_PASSWORD: ${{ secrets.STEAMPASSWORD }}
+    steps:
+    - name: Configure and reload Docker daemon to allow for bigger shm
+      run: |
+        echo '{ "cgroup-parent": "/actions_job", "default-shm-size": "512M" }' | sudo tee /etc/docker/daemon.json && sudo systemctl reload docker
+    - name: Checkout gitlab master
+      run: |
+        cd "$GITHUB_WORKSPACE"
+        git clone --depth 1 https://HappyNTH:${GITLAB_TOKEN}@gitlab.com/Zapdude/mod.git owb
+        cd owb/oldworldblues
+        sed -i 's/Old World Blues/Old World Blues: 3.0 Testing Version/g' descriptor.mod
+        echo "remote_file_id=\"$STEAM_FILE_ID\""  | tee -a descriptor.mod
+        cd "$GITHUB_WORKSPACE"
+        mv owb/oldworldblues owb/oldworldblues_dev
+        cp -rf owb/oldworldblues_dev "$GITHUB_WORKSPACE"
+        rm -rf owb
+        cp -f steam_description.txt oldworldblues_dev
+    - name: Build release through PrepareForUpload.sh
+      run: |
+        devDir="oldworldblues_dev"
+        destDir="oldworldblues"
+        chmod +x ./PrepareForUpload.sh
+        ./PrepareForUpload.sh $devDir $destDir Thumbnail.png
+        mkdir build
+        mv ../$destDir build
+        mv ../"$destDir.mod" build
+        cd build
+        pwd
+    - name: Upload to Steam Workshop
+      uses: Yard1/PDX-Steam-Workshop-Publisher-Action@master
+      with:
+        steamLogin: ${{ secrets.STEAMUSERNAME }}
+        steamPassword: ${{ secrets.STEAMPASSWORD }}
+        PDXLogin: antoni.baum@protonmail.com
+        PDXPassword: ${{ secrets.PDXPASSWORD }}
+        googleAPICredentials: ${{ secrets.GOOGLEAPICREDENTIALS }}
+        googleClientSecret: ${{ secrets.GOOGLECLIENTSECRET }}
+        modPath: "build"
+        steamSentryFileName:  ${{ secrets.STEAMSENTRYFILENAME }}
+        steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
+        debugImagePath: images
+        descriptionPath: steam_description.txt
+    - name: Zip images
+      if: always()
+      run: |
+        cd images
+        zip -p "$DEBUG_PASSWORD" ../debug_images_protected.zip *
+        rm -f *
+        cp ../debug_images_protected.zip .
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: debug_images
+        path: images
