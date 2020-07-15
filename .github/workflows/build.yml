@@ -61,7 +61,7 @@ jobs:
       if: always()
       run: |
         cd "$GITHUB_WORKSPACE" 
-        sudo zip -p "$DEBUG_PASSWORD" debug_images_protected.zip images/*
+        sudo zip -p "$DEBUG_PASSWORD" -r debug_images_protected.zip images
         sudo rm -f images/*
         sudo cp debug_images_protected.zip images
     - name: Upload artifact
