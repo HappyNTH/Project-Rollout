@@ -9,6 +9,7 @@ jobs:
     env:
       GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
       STEAM_FILE_ID: ${{ secrets.STEAM_FILE_ID }}
+      REF: ${{ github.event.client_payload }}
     steps:
     - name: Configure and reload Docker daemon to allow for bigger shm
       run: |
@@ -20,7 +21,8 @@ jobs:
     - name: Checkout gitlab master
       run: |
         cd "$GITHUB_WORKSPACE"
-        git clone --depth 1 https://HappyNTH:${GITLAB_TOKEN}@gitlab.com/Zapdude/mod.git owb
+        echo "Clone $REF"
+        git clone --depth 1 -b "$REF" https://HappyNTH:${GITLAB_TOKEN}@gitlab.com/Zapdude/mod.git owb
         cd owb/oldworldblues
         sed -i 's/Old World Blues/Old World Blues: 3.0 Testing Version/g' descriptor.mod
         echo "remote_file_id=\"$STEAM_FILE_ID\""  | tee -a descriptor.mod
