@@ -18,7 +18,7 @@ jobs:
       with:
         ref: master
         fetch-depth: 1
-    - name: Checkout gitlab master
+    - name: Checkout gitlab
       run: |
         cd "$GITHUB_WORKSPACE"
         echo "Clone $REF"
