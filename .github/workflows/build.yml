@@ -28,7 +28,6 @@ jobs:
         mv owb/oldworldblues owb/oldworldblues_dev
         cp -rf owb/oldworldblues_dev "$GITHUB_WORKSPACE"
         rm -rf owb
-        cp -f steam_description.txt oldworldblues_dev
     - name: Build release through PrepareForUpload.sh
       run: |
         cp PrepareForUpload.sh "$GITHUB_WORKSPACE/oldworldblues_dev" 
@@ -55,7 +54,6 @@ jobs:
         steamSentryFileName:  ${{ secrets.STEAMSENTRYFILENAME }}
         steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
         debugImagePath: images
-        descriptionPath: steam_description.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       if: always()
