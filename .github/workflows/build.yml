@@ -32,6 +32,7 @@ jobs:
         cp -f steam_description.txt oldworldblues_dev
     - name: Build release through PrepareForUpload.sh
       run: |
+        cp PrepareForUpload.sh "$GITHUB_WORKSPACE/oldworldblues_dev" 
         cd "$GITHUB_WORKSPACE/oldworldblues_dev" 
         devDir="oldworldblues_dev"
         destDir="oldworldblues"
