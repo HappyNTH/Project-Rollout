@@ -40,7 +40,7 @@ jobs:
         mv ../$destDir build
         mv ../"$destDir.mod" build
         mv build "$GITHUB_WORKSPACE"
-        cd build
+        cd "$GITHUB_WORKSPACE/build"
         pwd
         ls
     - name: Upload to Steam Workshop
