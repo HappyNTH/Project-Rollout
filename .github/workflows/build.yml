@@ -60,10 +60,10 @@ jobs:
     - name: Zip images
       if: always()
       run: |
-        cd images
-        zip -p "$DEBUG_PASSWORD" ../debug_images_protected.zip *
-        rm -f *
-        cp ../debug_images_protected.zip .
+        cd "$GITHUB_WORKSPACE" 
+        sudo zip -p "$DEBUG_PASSWORD" debug_images_protected.zip images/*
+        sudo rm -f images/*
+        sudo cp debug_images_protected.zip images
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
