@@ -58,6 +58,7 @@ jobs:
         descriptionPath: steam_description.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: debug_images
         path: images
