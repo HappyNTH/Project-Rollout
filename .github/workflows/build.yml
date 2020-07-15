@@ -9,7 +9,6 @@ jobs:
     env:
       GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
       STEAM_FILE_ID: ${{ secrets.STEAM_FILE_ID }}
-      DEBUG_PASSWORD: ${{ secrets.STEAMPASSWORD }}
     steps:
     - name: Configure and reload Docker daemon to allow for bigger shm
       run: |
@@ -57,13 +56,6 @@ jobs:
         steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
         debugImagePath: images
         descriptionPath: steam_description.txt
-    - name: Zip images
-      if: always()
-      run: |
-        cd "$GITHUB_WORKSPACE" 
-        sudo zip -p "$DEBUG_PASSWORD" -r debug_images_protected.zip images
-        sudo rm -f images/*
-        sudo cp debug_images_protected.zip images
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
