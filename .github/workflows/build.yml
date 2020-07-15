@@ -39,8 +39,10 @@ jobs:
         mkdir build
         mv ../$destDir build
         mv ../"$destDir.mod" build
+        mv build "$GITHUB_WORKSPACE"
         cd build
         pwd
+        ls
     - name: Upload to Steam Workshop
       uses: Yard1/PDX-Steam-Workshop-Publisher-Action@master
       with:
@@ -50,7 +52,7 @@ jobs:
         PDXPassword: ${{ secrets.PDXPASSWORD }}
         googleAPICredentials: ${{ secrets.GOOGLEAPICREDENTIALS }}
         googleClientSecret: ${{ secrets.GOOGLECLIENTSECRET }}
-        modPath: "oldworldblues_dev/build"
+        modPath: "build"
         steamSentryFileName:  ${{ secrets.STEAMSENTRYFILENAME }}
         steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
         debugImagePath: images
