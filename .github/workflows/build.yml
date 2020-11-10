@@ -24,7 +24,7 @@ jobs:
         echo "Clone $REF"
         git clone --depth 1 -b "$REF" https://HappyNTH:${GITLAB_TOKEN}@gitlab.com/Zapdude/mod.git owb
         cd owb/oldworldblues
-        sed -i 's/Old World Blues/Old World Blues: 3.0 Testing Version/g' descriptor.mod
+        sed -i 's/Old World Blues/Old World Blues: Permanant Testing Version/g' descriptor.mod
         echo "remote_file_id=\"$STEAM_FILE_ID\""  | tee -a descriptor.mod
         echo "path=\"mod/oldworldblues\""  | tee -a descriptor.mod
         cd "$GITHUB_WORKSPACE"
