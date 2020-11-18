@@ -59,7 +59,7 @@ jobs:
         steamSentryFileName:  ${{ secrets.STEAMSENTRYFILENAME }}
         steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
         debugImagePath: images
-        descriptionPath: doc/steam_description.txt
+        descriptionPath: steam_description.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       if: always()
