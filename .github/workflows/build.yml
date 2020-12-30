@@ -25,15 +25,15 @@ jobs:
         echo "Clone $REF"
         git clone --depth 1 -b "$REF" https://HappyNTH:${GITLAB_TOKEN}@gitlab.com/Zapdude/mod.git owb
         cd owb/oldworldblues
-        if [ "$IS_TEST" = "true" ]; then
+        if [ "$IS_TEST" = "false" ]; then
+          echo "Publishing release version..."
+          echo "remote_file_id=\"2265420196\""  | tee -a descriptor.mod
+          echo "DESC_PATH=doc/owb_steam_description.txt" >> $GITHUB_ENV
+        else
           echo "Publishing test version..."
           sed -i 's/Old World Blues/Old World Blues: Permanant Testing Version/g' descriptor.mod
           echo "remote_file_id=\"$STEAM_FILE_ID\""  | tee -a descriptor.mod
           echo "DESC_PATH=steam_description.txt" >> $GITHUB_ENV
-        else
-          echo "Publishing release version..."
-          echo "remote_file_id=\"2265420196\""  | tee -a descriptor.mod
-          echo "DESC_PATH=oldworldblues_dev/doc/owb_steam_description.txt" >> $GITHUB_ENV
         fi
         echo "path=\"mod/oldworldblues\""  | tee -a descriptor.mod
         cd "$GITHUB_WORKSPACE"
