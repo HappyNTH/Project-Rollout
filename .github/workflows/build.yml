@@ -1,4 +1,4 @@
-name: Build Test Release
+name: Build Release
 
 on:
   repository_dispatch:
@@ -10,6 +10,7 @@ jobs:
       GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
       STEAM_FILE_ID: ${{ secrets.STEAM_FILE_ID }}
       REF: ${{ github.event.client_payload.ref }}
+      IS_TEST: ${{ github.event.client_payload.is_test }}
     steps:
     - name: Configure and reload Docker daemon to allow for bigger shm
       run: |
@@ -24,8 +25,16 @@ jobs:
         echo "Clone $REF"
         git clone --depth 1 -b "$REF" https://HappyNTH:${GITLAB_TOKEN}@gitlab.com/Zapdude/mod.git owb
         cd owb/oldworldblues
-        sed -i 's/Old World Blues/Old World Blues: Permanant Testing Version/g' descriptor.mod
-        echo "remote_file_id=\"$STEAM_FILE_ID\""  | tee -a descriptor.mod
+        if [ "$IS_TEST" = "true" ]; then
+          echo "Publishing test version..."
+          sed -i 's/Old World Blues/Old World Blues: Permanant Testing Version/g' descriptor.mod
+          echo "remote_file_id=\"$STEAM_FILE_ID\""  | tee -a descriptor.mod
+          echo "DESC_PATH=steam_description.txt" >> $GITHUB_ENV
+        else
+          echo "Publishing release version..."
+          echo "remote_file_id=\"2265420196\""  | tee -a descriptor.mod
+          echo "DESC_PATH=oldworldblues_dev/doc/owb_steam_description.txt" >> $GITHUB_ENV
+        fi
         echo "path=\"mod/oldworldblues\""  | tee -a descriptor.mod
         cd "$GITHUB_WORKSPACE"
         mv owb/oldworldblues owb/oldworldblues_dev
@@ -59,7 +68,7 @@ jobs:
         steamSentryFileName:  ${{ secrets.STEAMSENTRYFILENAME }}
         steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
         debugImagePath: images
-        descriptionPath: steam_description.txt
+        descriptionPath: ${{ env.DESC_PATH }}
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       if: always()
