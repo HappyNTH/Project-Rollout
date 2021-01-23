@@ -28,7 +28,7 @@ jobs:
         if [ "$IS_TEST" = "false" ]; then
           echo "Publishing release version..."
           echo "remote_file_id=\"2265420196\""  | tee -a descriptor.mod
-          echo "DESC_PATH=doc/owb_steam_description.txt" >> $GITHUB_ENV
+          echo "DESC_PATH=build/doc/owb_steam_description.txt" >> $GITHUB_ENV
         else
           echo "Publishing test version..."
           sed -i 's/Old World Blues/Old World Blues: Permanant Testing Version/g' descriptor.mod
