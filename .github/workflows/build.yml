@@ -36,7 +36,7 @@ jobs:
           echo "remote_file_id=\"$STEAM_FILE_ID\""  | tee -a descriptor.mod
           echo "DESC_PATH=steam_description.txt" >> $GITHUB_ENV
         fi
-        echo "path=\"mod/oldworldblues\""  | tee -a descriptor.mod
+        #echo "path=\"mod/oldworldblues\""  | tee -a descriptor.mod
         cd "$GITHUB_WORKSPACE"
         mv owb/oldworldblues owb/oldworldblues_dev
         cp -rf owb/oldworldblues_dev "$GITHUB_WORKSPACE"
