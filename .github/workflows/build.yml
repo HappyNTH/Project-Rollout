@@ -71,6 +71,7 @@ jobs:
         steamSentryFileHex: ${{ secrets.STEAMSENTRYFILEHEX }}
         debugImagePath: images
         descriptionPath: ${{ env.DESC_PATH }}
+        debugSetupVNC: "1"
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       if: always()
